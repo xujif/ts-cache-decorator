@@ -1,6 +1,6 @@
 # ts-cache-decorator
 
-###usage:
+###usage:  
 only support async method. because the cache store is async.
 if used on sync method, it will be cast to async function
 ####1. simple
