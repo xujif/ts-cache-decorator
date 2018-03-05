@@ -48,3 +48,19 @@ class ClassA {
 }
 
 ```
+
+### store usage 
+```
+```typescript
+import { CacheMethod ,setDefaultStore,RedisCacheStore } from 'ts-cache-decorator';
+import * as redis from 'redis'
+
+const store = new RedisCacheStore(redis.createClient('redis://127.0.0.1:6379'))
+
+await store.set('xxx',{a:1})
+const obj = await store.get('xxx')
+
+
+```
+
+```
