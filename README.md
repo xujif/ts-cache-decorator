@@ -57,7 +57,7 @@ import * as redis from 'redis'
 
 const store = new RedisCacheStore(redis.createClient('redis://127.0.0.1:6379'))
 
-await store.set('xxx',{a:1})
+await store.set('xxx',3600,{a:1}) //缓存一小时
 const obj = await store.get('xxx')
 
 
