@@ -53,7 +53,7 @@ class ClassA {
 
 ```
 
-### store usage 
+####3 store usage 
 
 ```typescript
 import { CacheMethod ,setDefaultStore,RedisCacheStore } from 'ts-cache-decorator';
