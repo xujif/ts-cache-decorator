@@ -9,10 +9,9 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "@types/redis": "^2.6.0"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@types/redis": "^2.8.6",
     "tslint-config-prettier": "^1.9.0",
     "tslint-config-standard": "^7.0.0",
     "typescript": "^2.5.3"
