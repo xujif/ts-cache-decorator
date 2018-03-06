@@ -1,5 +1,7 @@
-import { RedisClient } from 'redis'
+import { RedisClient } from 'redis';
+
 export interface CacheStore {
+    forever (key: string, value: any): Promise<void>
     set (key: string, ttl: number, value: any): Promise<void>
     get<T>(key: string): Promise<T | undefined>
     delete (key: string): Promise<boolean>
@@ -15,6 +17,20 @@ export class RedisCacheStore implements CacheStore {
     constructor(protected redis: RedisClient) {
 
     }
+
+    async forever (key: string, value: any): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            this.redis.set(key, JSON.stringify(value), (err, replay) => {
+                if (err) {
+                    reject(err)
+                }
+                else {
+                    resolve()
+                }
+            })
+        })
+    }
+
     async set (key: string, ttl: number, value: any): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             this.redis.set(key, JSON.stringify(value), 'EX', ttl, (err, replay) => {
@@ -61,9 +77,13 @@ export class RedisCacheStore implements CacheStore {
 export class MemoryCacheStore implements CacheStore {
     protected cache = new Map<string, CachePayload>()
 
-    protected getTimestamp () {
-        return (new Date).getTime() / 1000
+    async forever (key: string, value: any): Promise<void> {
+        this.cache.set(key, {
+            expireAt: 0,
+            data: value
+        })
     }
+
     async set (key: string, ttl: number, value: any): Promise<void> {
         this.cache.set(key, {
             expireAt: this.getTimestamp() + ttl,
@@ -93,11 +113,15 @@ export class MemoryCacheStore implements CacheStore {
         if (!payload) {
             return false
         }
-        if (payload.expireAt < this.getTimestamp()) {
+        if (payload.expireAt > 0 && payload.expireAt < this.getTimestamp()) {
             this.cache.delete(key)
             return false
         }
         return true
+    }
+
+    protected getTimestamp () {
+        return (new Date).getTime() / 1000
     }
 }
 
@@ -122,7 +146,7 @@ export function CacheMethod (opt: MemoizeOption, store?: CacheStore) {
         const objId = target[ID_SYMBOL]
         const usedCacheStore = store || cacheStore
         if (!descriptor.value) {
-            throw 'decorator only support method'
+            throw new Error('decorator only support method')
         }
         const orginMethod = descriptor.value
         descriptor.value = async function (...args: any[]) {
@@ -130,7 +154,7 @@ export function CacheMethod (opt: MemoizeOption, store?: CacheStore) {
             if (await usedCacheStore.has(cacheKey)) {
                 return usedCacheStore.get(cacheKey)
             }
-            const value = await orginMethod.apply(this, args)
+            let value = await orginMethod.apply(this, args)
             await usedCacheStore.set(cacheKey, opt.ttl, value)
             return value
         }
