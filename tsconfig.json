@@ -1,31 +1,32 @@
 {
-  "compileOnSave": true,
-  "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
-  ],
-  "compilerOptions": {
-    "typeRoots": [
-      "node_modules/@types"
+    "compileOnSave": true,
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts",
+        "dist"
     ],
-    "lib": [
-      "dom",
-      "es2015",
-      "esnext.asynciterable"
-    ],
-    "sourceMap": true,
-    "types": [],
-    "allowSyntheticDefaultImports": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "module": "commonjs",
-    "declaration": true,
-    "target": "es2017",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "noImplicitAny": false,
-    "downlevelIteration": true,
-    "strictNullChecks": true
-  }
+    "compilerOptions": {
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "lib": [
+            "dom",
+            "es2015",
+            "esnext.asynciterable"
+        ],
+        "sourceMap": true,
+        "types": [],
+        "allowSyntheticDefaultImports": true,
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "strict": true,
+        "module": "commonjs",
+        "declaration": true,
+        "target": "es2017",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "noImplicitAny": false,
+        "downlevelIteration": true,
+        "strictNullChecks": true
+    }
 }
