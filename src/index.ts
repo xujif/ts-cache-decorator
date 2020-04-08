@@ -140,16 +140,16 @@ export interface MemoizeOption {
 }
 export function CacheMethod (opt: MemoizeOption, store?: CacheStore) {
     return function (target: Object, method: string, descriptor: TypedPropertyDescriptor<any>) {
-        if (!target[ID_SYMBOL]) {
-            target[ID_SYMBOL] = OBJECT_ID++
-        }
-        const objId = target[ID_SYMBOL]
         const usedCacheStore = store || cacheStore
         if (!descriptor.value) {
             throw new Error('decorator only support method')
         }
         const orginMethod = descriptor.value
-        descriptor.value = async function (...args: any[]) {
+        descriptor.value = async function (this: any, ...args: any[]) {
+            if (!this[ID_SYMBOL]) {
+                this[ID_SYMBOL] = OBJECT_ID++
+            }
+            const objId = this[ID_SYMBOL]
             const cacheKey = opt.key ? opt.key.call(this, objId, method, args) : `cache#{ojb_${objId}}#${method}#${JSON.stringify(args)}`
             if (await usedCacheStore.has(cacheKey)) {
                 return usedCacheStore.get(cacheKey)
