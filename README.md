@@ -1,14 +1,14 @@
 # ts-cache-decorator
 
-###usage:  
+### usage:  
 only support async method. because the cache store is async.  
 if used on sync method, it will be cast to async function
-  
-####0. install
+
+#### 0. install
 ```
 yarn/npm install ts-cache-decorator
 ```
-####1. simple
+#### 1. simple
 ```typescript
 import { CacheMethod } from 'ts-cache-decorator';
 
@@ -23,7 +23,7 @@ class ClassA {
 
 ```
 
-####2. custom key or cache store 
+#### 2. custom key or cache store 
 cache store support redis and built in memory
 
 ```typescript
@@ -53,7 +53,7 @@ class ClassA {
 
 ```
 
-####3 store usage 
+#### 3 store usage 
 
 ```typescript
 import { CacheMethod ,setDefaultStore,RedisCacheStore } from 'ts-cache-decorator';
